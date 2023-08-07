@@ -16,16 +16,24 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<User> findAll(){
+    public List<User> findAll() {
         return userRepository.findAll();
     }
-    public User findById(String id){
+
+    public User findById(String id) {
         return userRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
     }
-    public User insert(User user){
+
+    public User insert(User user) {
         return userRepository.insert(user);
     }
-    public User fromDTO (UserDTO userDTO){
+
+    public void delete(String id) {
+        findById(id);
+        userRepository.deleteById(id);
+    }
+
+    public User fromDTO(UserDTO userDTO) {
         return new User(userDTO.getId(), userDTO.getName(), userDTO.getEmail());
     }
 }

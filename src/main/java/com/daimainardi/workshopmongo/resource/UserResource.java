@@ -1,5 +1,6 @@
 package com.daimainardi.workshopmongo.resource;
 
+import com.daimainardi.workshopmongo.domain.Post;
 import com.daimainardi.workshopmongo.domain.User;
 import com.daimainardi.workshopmongo.dto.UserDTO;
 import com.daimainardi.workshopmongo.service.UserService;
@@ -49,7 +50,10 @@ public class UserResource {
         User user = userService.fromDTO(userDTO);
         user.setId(id);
         userService.update(user);
-
     }
 
+    @GetMapping(value = "/{id}/posts")
+    public List<Post> findPosts(@PathVariable String id) {
+        return userService.findById(id).getPosts();
+    }
 }

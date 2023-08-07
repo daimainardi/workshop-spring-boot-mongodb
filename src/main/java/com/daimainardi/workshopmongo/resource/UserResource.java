@@ -21,23 +21,35 @@ public class UserResource {
     }
 
     @GetMapping
-    public List<UserDTO> findAll(){
+    public List<UserDTO> findAll() {
         return userService.findAll().stream().map(UserDTO::new).toList();
     }
+
     @GetMapping(value = "/{id}")
-    public UserDTO findById(@PathVariable String id){
+    public UserDTO findById(@PathVariable String id) {
         return new UserDTO(userService.findById(id));
     }
+
     @PostMapping
-    public ResponseEntity<Void> insert(@RequestBody UserDTO userDTO){
+    public ResponseEntity<Void> insert(@RequestBody UserDTO userDTO) {
         User user = userService.insert(userService.fromDTO(userDTO));
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
+
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable String id){
+    public void delete(@PathVariable String id) {
         userService.delete(id);
+    }
+
+    @PutMapping(value = "/{id}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void update(@RequestBody UserDTO userDTO, @PathVariable String id) {
+        User user = userService.fromDTO(userDTO);
+        user.setId(id);
+        userService.update(user);
+
     }
 
 }

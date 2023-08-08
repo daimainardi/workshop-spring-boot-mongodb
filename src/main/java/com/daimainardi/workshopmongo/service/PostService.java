@@ -5,6 +5,8 @@ import com.daimainardi.workshopmongo.repository.PostRepository;
 import com.daimainardi.workshopmongo.service.exception.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PostService {
     private final PostRepository postRepository;
@@ -14,5 +16,8 @@ public class PostService {
     }
     public Post findById(String id) {
         return postRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Usuário não encontrado"));
+    }
+    public List<Post> findByTitle(String text){
+        return postRepository.findByTitleContainingIgnoreCase(text);
     }
 }
